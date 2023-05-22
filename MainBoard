@@ -1,0 +1,146 @@
+package com.skillstorm.jobsrus;
+
+import java.util.*;
+import java.io.*;
+import java.nio.file.*;
+import java.nio.charset.StandardCharsets;
+import javax.swing.*;
+
+public class MainBoard {
+
+	public static void main(String args) throws FileNotFoundException {
+		boolean isLoggedIn = false;
+
+		String[] signedOutChoices = { "--- Choose an Option Below ---", "Log In", "Job Board", "Create Account",
+				"Quit" }; // String array of choices to prompt the user if not signed in
+		String[] signedInChoices = { "--- Choose an Option Below ---", "Log Out", "Job Board", "Create Resume",
+				"Quit" }; // String array of choices to prompt the user if signed in
+		if (isLoggedIn == false) {
+			mainMenu(signedOutChoices, isLoggedIn);
+		} else {
+			mainMenu(signedInChoices, isLoggedIn);
+		}
+	}
+
+	public static boolean mainMenu(String[] choices, boolean isLoggedIn) throws FileNotFoundException {
+		Object input = (String) JOptionPane.showInputDialog(null, "Please select one of the valid options.",
+				"Job Board", JOptionPane.PLAIN_MESSAGE, null, choices, choices[0]); // Initial choice
+		if (isLoggedIn == false) {
+			while (!input.toString().equals("Quit")) // While loop to check for when user chooses the exit the program
+														// option to end the loop
+			{
+				readUsersFromCSV();
+				switch (input.toString()) // switch case checking the user selection from drop down to call correct
+											// method
+				{
+				case "--- Choose an Option Below ---":
+					JOptionPane.showMessageDialog(null, "Please select one of the valid options.");
+					break;
+				case "Log In":
+					login();
+					break;
+				case "Job Board":
+					viewJobBoard(isLoggedIn);
+					break;
+				case "Create Account":
+					String username = (String) JOptionPane.showInputDialog(null, "Choose your username: ").trim();
+					// createUser(userInfo);
+					break;
+				case "Quit":
+					break;
+				}
+			}
+		} else {
+			while (!input.toString().equals("Quit")) // While loop to check for when user chooses the 
+														// exit the program option to end the loop
+			{
+				switch (input.toString()) // switch case checking the user selection from drop 
+											//down to call correct method
+				{
+				case "--- Choose an Option Below ---":
+					JOptionPane.showMessageDialog(null, "Please select one of the valid options.");
+					break;
+				case "Log Out":
+					return false;
+					break;
+				case "Job Board":
+					viewJobBoard(isLoggedIn);
+					break;
+				case "Create Resume":
+					createResume();
+					break;
+				case "Quit":
+					break;
+				}
+			
+		}
+		return isLoggedIn;
+	}
+
+	private static List<Users> readUsersFromCSV() throws FileNotFoundException {
+		String name, email, username, password;
+		int id, phoneNumber;
+		Scanner in = new Scanner(new File("Users.csv"));
+		ArrayList<Users> users = new ArrayList<>();
+
+		in.useDelimiter(",|\n");
+		while (in.hasNext()) {
+			id = in.nextInt();
+			name = in.next();
+			email = in.next();
+			phoneNumber = in.nextInt();
+			username = in.next();
+			password = in.next();
+
+			users.add(new Users(id, name, email, phoneNumber, username, password));
+		}
+		return users;
+	}
+
+	private static Users createUser(String[] metadata) {
+		int id = Integer.parseInt(metadata[0]);
+		String name = metadata[1];
+		String email = metadata[2];
+		int phoneNumber = Integer.parseInt(metadata[3]);
+		String username = metadata[4];
+		String password = metadata[5];// create and return book of this metadata
+		return new Users(id, name, email, phoneNumber, username, password);
+	}
+
+	public boolean checkForUser(String pathToFile, int index, String user) throws IOException {
+		Reader in = new FileReader(pathToFile);
+		Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(in);
+
+		for (CSVRecord record : records) {
+			String rowValue = record.get(index);
+			if (targetValue.equals(rowValue))
+				return true;
+		}
+		return false;
+	}
+
+	public static boolean login()
+    {
+        if{}
+        else
+        {
+            return
+        }
+    }
+
+	public static void viewJobBoard(boolean loggedIn) {
+		
+	String csvFile = "C:\\Users\\lcarp\\OneDrive\\Documents\\Java\\Project\\Jobs.csv";
+	CsvReader csv = new CsvReader();
+	csv.readIt(csvFile);
+		
+	}
+
+		
+
+	
+
+	public static void createResume() {
+
+	}
+}
